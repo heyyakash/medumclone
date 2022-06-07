@@ -3,8 +3,11 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
+import { sanityClient, urlFor } from '../mediumsanitybuild/sanity'
+import Link from 'next/link'
+import Post from '../components/Post'
 
-export default function Home() {
+export default function Home({posts}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -14,6 +17,36 @@ export default function Home() {
       </Head>
       <Header />
       <Hero />
+
+      <div>
+        {posts.map((post)=>{
+          return(
+          <Post key = {post._id} post = {post} />
+          )
+        })};
+      </div>
     </div>
   )
+}
+
+export const getServerSideProps = async () => {
+  const query = `*[_type == "post"]{
+    _id,
+    title,
+    slug,
+    author -> {
+    name,
+    image
+  },
+  description,
+  mainImage
+  }`;
+
+  const posts = await sanityClient.fetch(query);
+
+  return {
+    props:{
+      posts,
+    }
+  }
 }
