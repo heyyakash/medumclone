@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm,submitHandler } from 'react-hook-form'
 
-const Comment = ({id}) => {
+const Comment = ({id,setSubmitted,submitted}) => {
     const {register,handleSubmit,formState:{errors}} = useForm();
-    
+
     const onSubmit = async (data) => {
         // console.log(data);
         fetch('/api/createComment',{
             method:'POST',
             body:JSON.stringify(data)
-        }).then(()=>console.log(data)
-        ).catch((err)=>console.log(err)
-        )
+        })
+        .then(setSubmitted(true))
+        .catch((err)=>
+            {
+                console.log(err);
+                setSubmitted(false);
+            })
         
     }
     

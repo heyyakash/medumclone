@@ -1,12 +1,13 @@
 import Header from "../../components/Header";
+import { useState } from "react";
 import { sanityClient, urlFor } from "../../mediumsanitybuild/sanity";
 import PortableText from "react-portable-text";
-import {IoMdArrowBack} from 'react-icons/io'
+import { IoMdArrowBack } from 'react-icons/io'
 import Link from 'next/link';
 import Comment from "../../components/Comment";
- 
+
 const Content = ({ post }) => {
- 
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div>
@@ -14,10 +15,10 @@ const Content = ({ post }) => {
       <div className="max-w-[800px] w-full gap-5 pb-8 mb-4 md:bg-white flex flex-col md:rounded-2xl overflow-hidden md:drop-shadow-2xl mx-auto">
         <div className="w-full h-[180px] relative">
           <div className="absolute top-3 left-3 bg-white p-2 rounded-full cursor-pointer hover:scale-[1.1] transition-all duration-200">
-            <Link href = "/">
+            <Link href="/">
               <IoMdArrowBack />
             </Link>
-            </div>
+          </div>
           <img src={urlFor(post.mainImage)} className="object-cover w-full h-full" alt="main image" />
         </div>
         <div className="px-5" >
@@ -37,12 +38,12 @@ const Content = ({ post }) => {
             serializers={
               {
                 image: (props) => {
-                  return (<img src={urlFor(props).url()} className = "rounded-[20px]" alt="featured" />)
+                  return (<img src={urlFor(props).url()} className="rounded-[20px]" alt="featured" />)
                 },
-                h1:(props) => {
+                h1: (props) => {
                   return (<h1 className="text-2xl font-bold" {...props}></h1>)
                 },
-                h2:(props) => {
+                h2: (props) => {
                   return (<h1 className="text-xl" {...props}></h1>)
                 },
               }
@@ -50,8 +51,26 @@ const Content = ({ post }) => {
           />
         </div>
       </div>
+      {submitted ?
+        (
+          <div className="max-w-[800px] my-5 p-4 drop-shadow-xl rounded-[20px] w-full mx-auto bg-white">
+            <h3 className="text-md">
+              Thank you for your submission. Your comment will appear here after review!
+            </h3>
+          </div>
+        )
 
-      <Comment id = {post._id} />
+        :
+        <Comment id={post._id} submitted={submitted} setSubmitted={setSubmitted} />
+      } 
+      <div className="max-w-[800px] flex flex-col my-5 p-4 drop-shadow-xl rounded-[20px] w-full mx-auto bg-white">
+        {post.comments && post.comments.map((comment)=>{
+          return (
+            <p><span className="font-semibold">{comment.name}</span> <span>{comment.comment}</span> </p>
+          )
+        })}
+
+      </div>
     </div>
   )
 }
@@ -85,6 +104,7 @@ export const getStaticProps = async ({ params }) => {
         name,
         image,
       },
+      'comments':*[_type=='comment' && post._ref == ^._id && approved == true],
       title,
       description,
       mainImage,
@@ -96,7 +116,8 @@ export const getStaticProps = async ({ params }) => {
   const post = await sanityClient.fetch(query, {
     slug: params?.slug
   });
-
+  console.log(post);
+  
   if (!post) {
     return {
       notFound: true
