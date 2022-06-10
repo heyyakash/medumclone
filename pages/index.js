@@ -18,12 +18,12 @@ export default function Home({posts}) {
       <Header />
       <Hero />
 
-      <div>
+      <div className='max-w-7xl mx-auto gap-5 flex flex-wrap w-full py-10 px-10 lg:px-2'>
         {posts.map((post)=>{
           return(
           <Post key = {post._id} post = {post} />
           )
-        })};
+        })}
       </div>
     </div>
   )
