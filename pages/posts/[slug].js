@@ -3,6 +3,7 @@ import { sanityClient, urlFor } from "../../mediumsanitybuild/sanity";
 import PortableText from "react-portable-text";
 import {IoMdArrowBack} from 'react-icons/io'
 import Link from 'next/link';
+import Comment from "../../components/Comment";
  
 const Content = ({ post }) => {
  
@@ -10,7 +11,7 @@ const Content = ({ post }) => {
   return (
     <div>
       <Header />
-      <div className="max-w-[800px] w-full gap-5 pb-8 md:bg-white flex flex-col md:rounded-2xl overflow-hidden md:drop-shadow-2xl mx-auto">
+      <div className="max-w-[800px] w-full gap-5 pb-8 mb-4 md:bg-white flex flex-col md:rounded-2xl overflow-hidden md:drop-shadow-2xl mx-auto">
         <div className="w-full h-[180px] relative">
           <div className="absolute top-3 left-3 bg-white p-2 rounded-full cursor-pointer hover:scale-[1.1] transition-all duration-200">
             <Link href = "/">
@@ -38,11 +39,19 @@ const Content = ({ post }) => {
                 image: (props) => {
                   return (<img src={urlFor(props).url()} className = "rounded-[20px]" alt="featured" />)
                 },
+                h1:(props) => {
+                  return (<h1 className="text-2xl font-bold" {...props}></h1>)
+                },
+                h2:(props) => {
+                  return (<h1 className="text-xl" {...props}></h1>)
+                },
               }
             }
           />
         </div>
       </div>
+
+      <Comment />
     </div>
   )
 }
@@ -64,7 +73,7 @@ export const getStaticPaths = async () => {
   }));
   return {
     paths,
-    fallback: "blocking"
+    fallback: false
   }
 }
 
@@ -87,9 +96,6 @@ export const getStaticProps = async ({ params }) => {
   const post = await sanityClient.fetch(query, {
     slug: params?.slug
   });
-  console.log(params.slug);
-
-  console.log(post);
 
   if (!post) {
     return {
