@@ -1,15 +1,22 @@
 import Header from "../../components/Header";
 import { sanityClient, urlFor } from "../../mediumsanitybuild/sanity";
 import PortableText from "react-portable-text";
-
+import {IoMdArrowBack} from 'react-icons/io'
+import Link from 'next/link';
+ 
 const Content = ({ post }) => {
-  console.log(post);
+ 
 
   return (
     <div>
       <Header />
       <div className="max-w-[800px] w-full gap-5 pb-8 md:bg-white flex flex-col md:rounded-2xl overflow-hidden md:drop-shadow-2xl mx-auto">
-        <div className="w-full h-[180px]">
+        <div className="w-full h-[180px] relative">
+          <div className="absolute top-3 left-3 bg-white p-2 rounded-full cursor-pointer hover:scale-[1.1] transition-all duration-200">
+            <Link href = "/">
+              <IoMdArrowBack />
+            </Link>
+            </div>
           <img src={urlFor(post.mainImage)} className="object-cover w-full h-full" alt="main image" />
         </div>
         <div className="px-5" >
