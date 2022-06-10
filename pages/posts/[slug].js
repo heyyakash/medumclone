@@ -51,7 +51,7 @@ const Content = ({ post }) => {
         </div>
       </div>
 
-      <Comment />
+      <Comment id = {post._id} />
     </div>
   )
 }
