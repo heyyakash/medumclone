@@ -9,9 +9,9 @@ const Post = ({ post }) => {
 
 
 
-            <div className="md:max-w-[300px] sm:flex-grow sm:justify-center sm:items-center bg-white rounded-lg border border-gray-200 shadow-md ">
+            <div className="md:max-w-[300px] w-full sm:justify-center sm:items-center bg-white rounded-lg border border-gray-200 shadow-md ">
                 <Link href="#">
-                    <img className="rounded-t-lg h-[170px] w-[100%] object-fill" src={urlFor(post.mainImage)} alt="thumbnail" />
+                    <img className="rounded-t-lg h-[170px] w-full object-cover" src={urlFor(post.mainImage)} alt="thumbnail" />
                 </Link>
                 <div className="p-5">
                     <div className='flex items-center gap-3 '>
