@@ -61,13 +61,13 @@ const Content = ({ post }) => {
         )
 
         :
-        <Comment key = {post._id} id={post._id} submitted={submitted} setSubmitted={setSubmitted} />
+        <Comment id={post._id} submitted={submitted} setSubmitted={setSubmitted} />
       } 
       {post.comments &&
       <div className="max-w-[800px] flex mb-4 flex-col my-5 p-4 drop-shadow-xl rounded-[20px] w-full mx-auto bg-white">
         {post.comments.map((comment)=>{
           return (
-            <p><span className="font-semibold">{comment.name}</span> <span>{comment.comment}</span> </p>
+            <p key = {comment._id}><span className="font-semibold">{comment.name}</span> <span>{comment.comment}</span> </p>
           )
         })}
         </div>}
