@@ -61,7 +61,7 @@ const Content = ({ post }) => {
         )
 
         :
-        <Comment id={post._id} submitted={submitted} setSubmitted={setSubmitted} />
+        <Comment key = {post._id} id={post._id} submitted={submitted} setSubmitted={setSubmitted} />
       } 
       {post.comments &&
       <div className="max-w-[800px] flex mb-4 flex-col my-5 p-4 drop-shadow-xl rounded-[20px] w-full mx-auto bg-white">
